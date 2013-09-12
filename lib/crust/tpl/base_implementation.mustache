@@ -1,0 +1,37 @@
+// DO NOT EDIT. This file is machine-generated and constantly overwritten.
+// Make changes to {{{class_name}}}.m instead.
+
+#import "_{{{class_name}}}.h"
+{{#array_converters}}
+{{#contains}}
+{{{.}}}
+{{/contains}}
+#import "NSValueTransformer+MTLPredefinedTransformerAdditions.h"
+{{/array_converters}}
+
+@implementation _{{{class_name}}}
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+    {{#extends}}
+    NSMutableDictionary *dictionary = [NSMutableDictionary dictionaryWithDictionary:[super JSONKeyPathsByPropertyKey]];
+    [dictionary addEntriesFromDictionary:@{
+        {{#properties}}
+        {{{.}}}
+        {{/properties}}
+    }];
+    return dictionary;
+    {{/extends}}
+    {{^extends}}
+    return @{
+        {{#properties}}
+        {{{.}}}
+        {{/properties}}
+    };
+    {{/extends}}
+}
+
+{{#array_converters}}
+{{{.}}}
+{{/array_converters}}
+
+@end
