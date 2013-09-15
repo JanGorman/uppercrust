@@ -125,7 +125,7 @@ class Generate
 
     properties.each do |name, type_info|
       type = match_type(type_info['type'])
-      extracted_properties << "@property(nonatomic#{self.retained(type) ? ', strong' : ''}) #{type} #{self.retained(type) ? '*' : ''}#{name};"
+      extracted_properties << "@property(nonatomic#{self.retained(type) ? ', copy' : ''}, readonly) #{type} #{self.retained(type) ? '*' : ''}#{name};"
     end
 
     extracted_properties
@@ -163,7 +163,7 @@ class Generate
   # @param [string] file_name
   # @return [string]
   def snake_to_camel(file_name)
-    (file_name.split('_').length > 1) ? file_name.split('_').map { |w| w.capitalize }.join('') : file_name
+    (file_name.split('_').length > 1) ? file_name.split('_').map { |w| w.capitalize }.join('') : file_name.capitalize
   end
 
 end

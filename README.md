@@ -8,15 +8,7 @@ Crust generates two header and two implementation files for each of your models.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-    gem 'crust'
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
+Install the gem as:
 
     $ gem install crust
 
@@ -25,6 +17,96 @@ Or install it yourself as:
     $ crust generate --path {path} --base_only true|false
     
 This generate an output folder with all the JSON files mapped to their Objective-C counterparts.
+
+Say for example, you have a model file named 'article.json'. Running crust will then generate 4 files for you:
+
+* _Article.h
+* _Article.m
+* Article.h
+* Article.m
+
+Lets look at the following simple example:
+
+```json
+{
+    "type":"object",
+    "$schema":"http://json-schema.org/draft-03/schema",
+    "id":"Article",
+    "description":"Result object that represents an article.",
+    "required":true,
+    "additionalProperties":false,
+    "properties":{
+        "brand":{
+            "type":"string",
+            "id":"brand",
+            "required":true
+        },
+        "sku":{
+            "type":"string",
+            "id":"sku",
+            "required":true
+        }
+    }
+}
+```
+
+_Article.h:
+
+```objc
+// DO NOT EDIT. This file is machine-generated and constantly overwritten.
+// Make changes to article.h instead.
+//
+// Result object that represents an article.
+
+#import "MTLModel.h"
+#import "MTLJSONAdapter.h"
+
+
+@interface _article : MTLModel<MTLJSONSerializing>
+
+@property(nonatomic, copy, readonly) NSString *brand;
+@property(nonatomic, copy, readonly) NSString *sku;
+
+@end
+```
+
+_Article.m:
+```objc
+// DO NOT EDIT. This file is machine-generated and constantly overwritten.
+// Make changes to article.m instead.
+
+#import "_article.h"
+
+@implementation _article
+
++ (NSDictionary *)JSONKeyPathsByPropertyKey {
+   return @{
+       @"brand" : @"brand",
+       @"sku" : @"sku"
+   };
+}
+
+
+@end
+```
+
+Article.h:
+```objc
+#import "_article.h"
+
+@interface article : _article
+@end
+```
+
+Article.m:
+```objc
+#import "article.h"
+
+@implementation article {
+}
+
+@end
+```
 
 ## Contributing
 
@@ -39,3 +121,4 @@ This generate an output folder with all the JSON files mapped to their Objective
 * Add tests!
 * Add some special types to the schema since Foundation has a richer vocabulary
 * Wiki
+* Add the option to prefix the generated class names
