@@ -62,7 +62,7 @@ _Article.h:
 #import "MTLJSONAdapter.h"
 
 
-@interface _article : MTLModel<MTLJSONSerializing>
+@interface _Article : MTLModel<MTLJSONSerializing>
 
 @property(nonatomic, copy, readonly) NSString *brand;
 @property(nonatomic, copy, readonly) NSString *sku;
@@ -75,9 +75,9 @@ _Article.m:
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
 // Make changes to article.m instead.
 
-#import "_article.h"
+#import "_Article.h"
 
-@implementation _article
+@implementation _Article
 
 + (NSDictionary *)JSONKeyPathsByPropertyKey {
    return @{
@@ -92,17 +92,17 @@ _Article.m:
 
 Article.h:
 ```objc
-#import "_article.h"
+#import "_Article.h"
 
-@interface article : _article
+@interface Article : _Article
 @end
 ```
 
 Article.m:
 ```objc
-#import "article.h"
+#import "Article.h"
 
-@implementation article {
+@implementation Article {
 }
 
 @end
