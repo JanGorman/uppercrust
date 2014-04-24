@@ -4,7 +4,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'crust/version'
 
 Gem::Specification.new do |spec|
-  spec.name = 'crust'
+  spec.name = 'objc-crust'
   spec.version = Crust::VERSION
   spec.authors = ['Jan Gorman']
   spec.email = %w(gorman.jan@gmail.com)

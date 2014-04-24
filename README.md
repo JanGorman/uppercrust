@@ -10,7 +10,7 @@ Crust generates two header and two implementation files for each of your models.
 
 Install the gem as:
 
-    $ gem install crust
+    $ gem install objc-crust
 
 ## Usage
 
