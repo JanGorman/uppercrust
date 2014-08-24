@@ -58,8 +58,7 @@ _Article.h:
 //
 // Result object that represents an article.
 
-#import "MTLModel.h"
-#import "MTLJSONAdapter.h"
+#import <Mantle/Mantle.h>
 
 
 @interface _Article : MTLModel<MTLJSONSerializing>
@@ -102,8 +101,7 @@ Article.m:
 ```objc
 #import "Article.h"
 
-@implementation Article {
-}
+@implementation Article
 
 @end
 ```
