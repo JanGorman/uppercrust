@@ -10,11 +10,11 @@ Crust generates two header and two implementation files for each of your models.
 
 Install the gem as:
 
-    $ gem install objc-crust
+    $ gem install uppercrust
 
 ## Usage
 
-    $ crust generate --path {path} --base_only true|false
+    $ uppercrust generate --path {path} --base_only true|false
     
 This generate an output folder with all the JSON files mapped to their Objective-C counterparts.
 
@@ -73,7 +73,7 @@ _Article.h:
 _Article.m:
 ```objc
 // DO NOT EDIT. This file is machine-generated and constantly overwritten.
-// Make changes to article.m instead.
+// Make changes to Article.m instead.
 
 #import "_Article.h"
 
@@ -120,5 +120,4 @@ Article.m:
 
 * Add tests!
 * Add some special types to the schema since Foundation has a richer vocabulary
-* Wiki
 * Add the option to prefix the generated class names

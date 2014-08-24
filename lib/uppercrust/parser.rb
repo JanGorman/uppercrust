@@ -1,6 +1,4 @@
-require 'mustache'
-
-class Generate
+class Parser
 
   attr_accessor :file_name
 
@@ -19,18 +17,17 @@ class Generate
     @array_converters = self.get_array_converters(data['properties'])
   end
 
-  # @return [array]
   def generate_files
     output = {}
 
-    output["_#{@generated_class}.h"] = Mustache.render(File.read(File.dirname(__FILE__) + '/tpl/base_header.mustache'),
+    output["_#{@generated_class}.h"] = Mustache.render(read_template('base_header'),
                                                        :class_name => @generated_class,
                                                        :extends_class => @extends_class,
                                                        :import => @import,
                                                        :description => @data['description'],
                                                        :properties => @properties)
 
-    output["_#{@generated_class}.m"] = Mustache.render(File.read(File.dirname(__FILE__) + '/tpl/base_implementation.mustache'),
+    output["_#{@generated_class}.m"] = Mustache.render(read_template('base_implementation'),
                                                        :class_name => @generated_class,
                                                        :properties => @variable_names,
                                                        :extends => !@import.nil?,
@@ -38,23 +35,25 @@ class Generate
                                                        :array_converters => @array_converters)
 
     unless @base_only
-      output["#{@generated_class}.h"] = Mustache.render(File.read(File.dirname(__FILE__) + '/tpl/header.mustache'),
+      output["#{@generated_class}.h"] = Mustache.render(read_template('header'),
                                                         :class_name => @generated_class)
 
-      output["#{@generated_class}.m"] = Mustache.render(File.read(File.dirname(__FILE__) + '/tpl/implementation.mustache'),
+      output["#{@generated_class}.m"] = Mustache.render(read_template('implementation'),
                                                         :class_name => @generated_class)
     end
 
     output
   end
 
-  # @param [array] properties
-  # @return [array]
+  def read_template(template_name)
+    File.read("#{File.dirname(__FILE__)}/tpl/#{template_name}.mustache")
+  end
+
   def get_contains(properties)
     contains = []
 
     properties.each do |name, type_info|
-      if match_type(type_info['type']) == 'NSArray' && type_info['items']['$ref'] != nil && type_info['items']['$ref'] != '#'
+      if self.match_type(type_info['type']) == 'NSArray' && type_info['items']['$ref'] != nil && type_info['items']['$ref'] != '#'
         contains << "#import \"_#{self.snake_to_camel(Pathname.new(type_info['items']['$ref']).basename('.json').to_s)}.h\""
       end
     end
@@ -62,13 +61,11 @@ class Generate
     contains
   end
 
-  # @param [array] properties
-  # @return [array]
   def get_array_converters(properties)
     array_converters = []
 
     properties.each do |name, type_info|
-      if match_type(type_info['type']) == 'NSArray' && type_info['items']['$ref'] != nil
+      if self.match_type(type_info['type']) == 'NSArray' && type_info['items']['$ref'] != nil
         extends = type_info['items']['$ref'] != '#' ? self.snake_to_camel(Pathname.new(type_info['items']['$ref']).basename('.json').to_s) : @generated_class
         array_converters << "+ (NSValueTransformer *)#{name}JSONTransformer {\n    return [NSValueTransformer mtl_JSONDictionaryTransformerWithModelClass:_#{extends}.class];\n}"
       end
@@ -77,8 +74,6 @@ class Generate
     array_converters
   end
 
-  # @param [hash] data
-  # @return [string]
   def get_import(data)
     if data['extends'].to_s == ''
       nil
@@ -88,8 +83,6 @@ class Generate
     end
   end
 
-  # @param [hash] data
-  # @return [string]
   def extends_class(data)
     if data['extends'].to_s == ''
       'MTLModel<MTLJSONSerializing>'
@@ -102,8 +95,6 @@ class Generate
     end
   end
 
-  # @param [array] keys
-  # @return [array]
   def extract_variable_names(keys)
     extracted_variables_names = []
 
@@ -118,27 +109,21 @@ class Generate
     extracted_variables_names
   end
 
-  # @param [array] properties
-  # @return [array]
   def extract_properties(properties)
     extracted_properties = []
 
     properties.each do |name, type_info|
       type = match_type(type_info['type'])
-      extracted_properties << "@property(nonatomic#{self.retained(type) ? ', copy' : ''}, readonly) #{type} #{self.retained(type) ? '*' : ''}#{name};"
+      extracted_properties << "@property(#{self.copy_type(type) ? 'copy' : 'assign'}, nonatomic, readonly) #{type} #{self.copy_type(type) ? '*' : ''}#{name};"
     end
 
     extracted_properties
   end
 
-  # @param [string] type
-  # @return [boolean]
-  def retained(type)
+  def copy_type(type)
     type != 'NSInteger' && type != 'BOOL'
   end
 
-  # @param [string] in_type
-  # @return [string]
   def match_type(in_type)
     case in_type
       when 'string'
@@ -160,8 +145,6 @@ class Generate
     end
   end
 
-  # @param [string] file_name
-  # @return [string]
   def snake_to_camel(file_name)
     (file_name.split('_').length > 1) ? file_name.split('_').map { |w| w.capitalize }.join('') : file_name.capitalize
   end
