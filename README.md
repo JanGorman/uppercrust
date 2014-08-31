@@ -1,10 +1,8 @@
-![Crust](https://dl.dropboxusercontent.com/u/512759/crust.png)
+# Uppercrust
 
-# Crust
+Inspired by [jsonschema2pojo](https://github.com/joelittlejohn/jsonschema2pojo "jsonschema2pojo"), uppercrust is your trusty companion to generate [Mantle](https://github.com/github/Mantle "Mantle") compatible model files in Objective-C.
 
-Inspired by [jsonschema2pojo](https://github.com/joelittlejohn/jsonschema2pojo "jsonschema2pojo"), crust is your trusty companion to generate [Mantle](https://github.com/github/Mantle "Mantle") compatible model files in Objective-C.
-
-Crust generates two header and two implementation files for each of your models. One set is prefixed with an underscore and is meant to be overwritten whenever the JSON schema changes. The files without underscore extends these classes and can be used to add custom functionality and custom mappings and should only be generated once.
+Uppercrust generates two header and two implementation files for each of your models. One set is prefixed with an underscore and is meant to be overwritten whenever the JSON schema changes. The files without underscore extends these classes and can be used to add custom functionality and custom mappings and should only be generated once.
 
 ## Installation
 
@@ -18,7 +16,7 @@ Install the gem as:
     
 This generate an output folder with all the JSON files mapped to their Objective-C counterparts.
 
-Say for example, you have a model file named 'article.json'. Running crust will then generate 4 files for you:
+Say for example, you have a model file named 'article.json'. Running uppercrust will then generate 4 files for you:
 
 * _Article.h
 * _Article.m
